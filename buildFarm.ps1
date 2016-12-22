@@ -15,6 +15,8 @@ configuration BuildFarm
     $domainCredentials = Get-AutomationPSCredential -Name 'domainCreds'
     $storageCredential = Get-AutomationPSCredential -Name 'storageCredential'
     $sonarQubeCredential = Get-AutomationPSCredential -Name 'svcSonarQubeDB'
+    $sqlServerLocalAdminCredential = Get-AutomationPSCredential -Name 'sqlServerLocalAdmin'
+
     $slackToken = Get-AutomationVariable -Name 'slackToken'
     $domainName = Get-AutomationVariable -Name 'domainName'
 
@@ -611,7 +613,7 @@ configuration BuildFarm
 
         Script OpenSqlPort
         {
-            Credential = $domainCredentials
+            Credential = $sqlServerLocalAdminCredential
             GetScript = {
                 # Do nothing
             }
@@ -626,7 +628,7 @@ configuration BuildFarm
 
         Script SqlServerLogins
         {
-            Credential = $domainCredentials
+            Credential = $sqlServerLocalAdminCredential
             GetScript = {
                 # Do nothing
             }
@@ -641,7 +643,7 @@ configuration BuildFarm
 
         Script AddEcAdminsToRemoteDesktop
         {
-            Credential = $domainCredentials
+            Credential = $sqlServerLocalAdminCredential
             GetScript = {
                 # Do nothing
             }
@@ -657,7 +659,7 @@ configuration BuildFarm
 
         Script AddEcAdminsToLocalAdmin
         {
-            Credential = $domainCredentials
+            Credential = $sqlServerLocalAdminCredential
             GetScript = {
                 # Do nothing
             }
