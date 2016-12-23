@@ -618,7 +618,7 @@ configuration BuildFarm
                 # Do nothing
             }
             TestScript = {
-                return !((Get-NetFirewallRule -Name 'Sql Server') -eq $null)
+                return !((Get-NetFirewallRule -Name 'Sql Server' -ErrorAction SilentlyContinue) -eq $null)
             }
             SetScript = {
                 # Open SQL Server port inbound
@@ -648,11 +648,11 @@ configuration BuildFarm
                 # Do nothing
             }
             TestScript = {
-                return !((net localgroup "Remote Desktop Users" | Select-String 'CLOUD\\users_admin_ec') -eq $null)
+                return !((net localgroup "Remote Desktop Users" | Select-String 'CLOUD\\admin_product_EC') -eq $null)
             }
             SetScript = {
                 # Enable ec admin users remote desktop access
-                net localgroup "Remote Desktop Users" /add "CLOUD\users_admin_ec"
+                net localgroup "Remote Desktop Users" /add "CLOUD\admin_product_EC"
             }
             DependsOn = "[xDSCDomainjoin]JoinDomain"
         }
@@ -664,11 +664,11 @@ configuration BuildFarm
                 # Do nothing
             }
             TestScript = {
-                return !((net localgroup "Administrators" | Select-String 'CLOUD\\users_admin_ec') -eq $null)
+                return !((net localgroup "Administrators" | Select-String 'CLOUD\\admin_product_EC') -eq $null)
             }
             SetScript = {
                 # Make ec admin users local admin
-                net localgroup "Administrators" /add "CLOUD\users_admin_ec"
+                net localgroup "Administrators" /add "CLOUD\admin_product_EC"
             }
             DependsOn = "[xDSCDomainjoin]JoinDomain"
         }
