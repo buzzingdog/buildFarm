@@ -633,12 +633,13 @@ configuration BuildFarm
                 # Do nothing
             }
             TestScript = {
-                return !((sqlcmd -S . -d master -Q "SELECT 'Found' FROM sys.server_principals WHERE name = N'BUILTIN\Administrators'" | Select-String 'found') -eq $null)
+                return !((sqlcmd -S . -d master -Q "SELECT 'Found' FROM sys.server_principals WHERE name = N'CLOUD\admin_product_EC'" | Select-String 'Found') -eq $null)
             }
             SetScript = {
                 # Add admin group to sql server logins
-                sqlcmd -S . -d master -Q "CREATE LOGIN [BUILTIN\Administrators] FROM WINDOWS WITH DEFAULT_DATABASE=[master]; ALTER SERVER ROLE [serveradmin] ADD MEMBER [BUILTIN\Administrators]"
+                sqlcmd -S . -d master -Q "CREATE LOGIN [CLOUD\admin_product_EC] FROM WINDOWS WITH DEFAULT_DATABASE=[master]; ALTER SERVER ROLE [sysadmin] ADD MEMBER [CLOUD\admin_product_EC]"
             }
+            DependsOn = "[xDSCDomainjoin]JoinDomain"
         }
 
         Script AddEcAdminsToRemoteDesktop
